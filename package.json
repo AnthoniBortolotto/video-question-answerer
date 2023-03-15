@@ -1,10 +1,10 @@
 {
   "name": "chatbot-facul",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "API using NestJS, Get an youtube video transcription and answer questions of it using OPENAI",
+  "author": "Anthoni Bortolotto Martinelli",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
