@@ -5,6 +5,6 @@ import axios from 'axios';
 @Injectable()
 export class AppService {
   async getHello() {
-    return 'OI'
+    
   }
 }

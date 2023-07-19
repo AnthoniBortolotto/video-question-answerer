@@ -17,7 +17,6 @@ export class ChatService {
     videoId: string,
   ): Promise<{ message: string }> {
     const transcription = await getTranscription(videoId);
-    return { message: transcription };
     const transcriptionPrompt = generatePrompt(transcription);
     const generatedPromptWithQuestion = generateQuestion(
       message,
