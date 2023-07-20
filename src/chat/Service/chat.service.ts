@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { splitPrompts } from 'src/helpers/promptNormalizers/normalizers';
 import {
-  generatePrompt,
-  generateQuestion,
   useOpenAI,
 } from 'src/services/openAI';
 import { getTranscription } from 'src/services/transcriptor';
@@ -15,17 +14,16 @@ export class ChatService {
   async sendResponse(
     message: string,
     videoId: string,
-  ): Promise<{ message: string }> {
+  ): Promise<{ message: any }> {
     const transcription = await getTranscription(videoId);
-    const transcriptionPrompt = generatePrompt(transcription);
-    const generatedPromptWithQuestion = generateQuestion(
-      message,
-      transcriptionPrompt,
-    );
+    const transcriptionChunks = splitPrompts(transcription, 3000);
+    //const transcriptionPrompt = generatePrompt(transcription, message);
+    transcriptionChunks.map(async (chunk) => {
 
-    const IAResponse = await useOpenAI({
-      prompt: generatedPromptWithQuestion,
-    });
-    return { message: IAResponse.choices[0].text };
+    })
+    // const IAResponse = await useOpenAI({
+    //   prompt: transcriptionPrompt,
+    // });
+    return { message: transcriptionChunks };
   }
 }

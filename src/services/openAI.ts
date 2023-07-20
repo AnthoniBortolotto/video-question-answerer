@@ -4,16 +4,7 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-export function generatePrompt(receivedMessage: string) {
-  return `Você receberá a transcrição de um vídeo no Youtube e deve responder perguntas e responder baseado no texto da transcrição, se a resposta não estiver na transcrição responda que  não é possível responder essa pergunta com base no vídeo
-Transcrição: ${receivedMessage}`;
-}
 
-export function generateQuestion(question: string, previousPrompt: string) {
-  return `
-${previousPrompt}
-  Pergunta: ${question}`;
-}
 
 interface IUseOpenAIOptions {
   prompt: string;
@@ -27,10 +18,10 @@ export async function useOpenAI({
   model = 'text-davinci-003',
   temperature = 0.5,
   maxResponseLength = 1000,
-}: IUseOpenAIOptions): Promise<CreateCompletionResponse> {
+}: IUseOpenAIOptions): Promise<CreateCompletionResponse>{
   const completion = await openai.createCompletion({
     model: model,
-    prompt: generatePrompt(prompt),
+    prompt: prompt,
     temperature: temperature,
     max_tokens: maxResponseLength,
   });
@@ -38,7 +29,7 @@ export async function useOpenAI({
 }
 
 export async function generateInputOutput(functionString: string) {
-  const prompt = generatePrompt(functionString);
+  const prompt = functionString;
   const completion = await useOpenAI({
     prompt,
     temperature: 0.5,
