@@ -1,40 +1,42 @@
-import { Configuration, CreateCompletionResponse, OpenAIApi } from 'openai';
-const configuration = new Configuration({
-  apiKey: process.env.OPEN_AI_KEY,
-});
-const openai = new OpenAIApi(configuration);
-
-
+import { InternalServerErrorException } from '@nestjs/common';
+import { AxiosError } from 'axios';
+import {
+  Configuration,
+  CreateChatCompletionResponse,
+  OpenAIApi,
+  ErrorResponse,
+  ChatCompletionRequestMessage,
+} from 'openai';
+import { ModelType } from 'src/helpers/types/AITypes';
 
 interface IUseOpenAIOptions {
-  prompt: string;
+  messages: ChatCompletionRequestMessage[];
   temperature?: number;
-  model?: string;
+  model?: ModelType;
   maxResponseLength?: number;
 }
 
 export async function useOpenAI({
-  prompt,
+  messages,
   model = 'text-davinci-003',
   temperature = 0.5,
   maxResponseLength = 1000,
-}: IUseOpenAIOptions): Promise<CreateCompletionResponse>{
-  const completion = await openai.createCompletion({
-    model: model,
-    prompt: prompt,
-    temperature: temperature,
-    max_tokens: maxResponseLength,
+}: IUseOpenAIOptions): Promise<CreateChatCompletionResponse> {
+  const configuration = new Configuration({
+    apiKey: process.env.OPEN_AI_KEY,
   });
+  const openai = new OpenAIApi(configuration);
+  const completion = await openai
+    .createChatCompletion({
+      model: model,
+      temperature: temperature,
+      max_tokens: maxResponseLength,
+      messages: messages,
+    })
+    .catch((err: AxiosError) => {
+      console.log('erro do OpenAi', err?.response);
+      throw new InternalServerErrorException('Error in useOpenAI');
+    });
+ // console.log('after request', completion.data.choices[0].message);
   return completion.data;
-}
-
-export async function generateInputOutput(functionString: string) {
-  const prompt = functionString;
-  const completion = await useOpenAI({
-    prompt,
-    temperature: 0.5,
-    maxResponseLength: 1020,
-  });
-  const results = completion.choices.map((choice) => choice.text);
-  return results;
 }
