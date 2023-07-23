@@ -15,28 +15,41 @@ interface IUseOpenAIOptions {
   model?: ModelType;
   maxResponseLength?: number;
 }
-
-export async function useOpenAI({
-  messages,
-  model = 'text-davinci-003',
-  temperature = 0.5,
-  maxResponseLength = 1000,
-}: IUseOpenAIOptions): Promise<CreateChatCompletionResponse> {
-  const configuration = new Configuration({
-    apiKey: process.env.OPEN_AI_KEY,
-  });
-  const openai = new OpenAIApi(configuration);
-  const completion = await openai
-    .createChatCompletion({
-      model: model,
-      temperature: temperature,
-      max_tokens: maxResponseLength,
-      messages: messages,
-    })
-    .catch((err: AxiosError) => {
-      console.log('erro do OpenAi', err?.response);
-      throw new InternalServerErrorException('Error in useOpenAI');
+export default class OpenAI {
+  openai: OpenAIApi;
+  constructor() {
+    const configuration = new Configuration({
+      apiKey: process.env.OPEN_AI_KEY,
     });
- // console.log('after request', completion.data.choices[0].message);
-  return completion.data;
+    this.openai = new OpenAIApi(configuration);
+  }
+
+  async getModeration(question: string){
+    const moderationResult = await this.openai.createModeration({
+      model: 'text-moderation-stable',
+      input: question,
+    })
+    return moderationResult.data.results;
+  }
+
+  async getCompletion({
+    messages,
+    model = 'text-davinci-003',
+    temperature = 0.5,
+    maxResponseLength = 1000,
+  }: IUseOpenAIOptions): Promise<CreateChatCompletionResponse> {
+    const completion = await this.openai
+      .createChatCompletion({
+        model: model,
+        temperature: temperature,
+        max_tokens: maxResponseLength,
+        messages: messages,
+      })
+      .catch((err: AxiosError) => {
+        console.log('erro do OpenAi', err?.response);
+        throw new InternalServerErrorException('Error in useOpenAI');
+      });
+    // console.log('after request', completion.data.choices[0].message);
+    return completion.data;
+  }
 }

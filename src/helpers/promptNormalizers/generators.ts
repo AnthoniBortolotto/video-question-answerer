@@ -33,6 +33,21 @@ export function generateChunkMessages(
   ];
 }
 
+export function generateModerationMessages(
+  question: string,
+): ChatCompletionRequestMessage[]{
+    return[
+      {
+        role: 'system',
+        content: `You are a back-end API service that checks if a string is appropriate, if it is, answer only 'yes', if it is not, answer only 'no', you should answer only this 2 words`,
+      },
+      {
+        role: 'user',
+        content: `${question}`,
+      }
+    ]
+}
+
 export function generateJoinChunkMessages(
   chunks: string[],
   question: string,
