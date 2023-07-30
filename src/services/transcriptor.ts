@@ -1,3 +1,4 @@
+import { InternalServerErrorException } from '@nestjs/common';
 import axios from 'axios';
 
 export async function getTranscription(videoId: string, language = 'pt') {
@@ -9,7 +10,7 @@ export async function getTranscription(videoId: string, language = 'pt') {
     })
     .catch((err) => {
       console.log('erro', err);
-      throw new Error('Erro ao acessar o serviço de transcrição');
+      throw new InternalServerErrorException('Erro ao acessar o serviço de transcrição');
     });
   const axiosResponse = await axios.get<{
     transcription: string;

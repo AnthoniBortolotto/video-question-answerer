@@ -8,6 +8,7 @@ import {
 import { splitPrompts } from 'src/helpers/promptNormalizers/normalizers';
 import OpenAI from 'src/services/openAI';
 import { getTranscription } from 'src/services/transcriptor';
+import IAnswerQuestionBody from '../interfaces/IAnswerQuestionBody.interface';
 
 @Injectable()
 export class ChatService {
@@ -16,12 +17,18 @@ export class ChatService {
   }
 
   async sendResponse(
-    question: string,
-    videoId: string,
-    lang = 'pt',
+    {
+      question,
+      lang = 'pt',
+      videoId,
+      receivedTranscription,
+    }: IAnswerQuestionBody
   ): Promise<{ message: any }> {
     //transcription
-    const transcription = await getTranscription(videoId, lang);
+    let transcription = receivedTranscription;
+    if (!transcription) {
+      transcription = await getTranscription(videoId, lang);
+    }
     const transcriptionChunks = splitPrompts(transcription, 10000);
 
     const iaAnswers = new Array<string>();
