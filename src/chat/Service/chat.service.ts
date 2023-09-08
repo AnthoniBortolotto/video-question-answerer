@@ -1,13 +1,12 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import {
   generateChunkMessages,
-  generateChunkPrompt,
   generateJoinChunkMessages,
   generateModerationMessages,
-} from 'src/helpers/promptNormalizers/generators';
-import { splitPrompts } from 'src/helpers/promptNormalizers/normalizers';
-import OpenAI from 'src/services/openAI';
-import { getTranscription } from 'src/services/transcriptor';
+} from '../helpers/promptNormalizers/generators';
+import { splitPrompts } from '../helpers/promptNormalizers/normalizers';
+import OpenAI from '../../services/openAI';
+import { getTranscription } from '../../services/transcriptor';
 import IAnswerQuestionBody from '../interfaces/IAnswerQuestionBody.interface';
 
 @Injectable()

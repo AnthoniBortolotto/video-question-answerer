@@ -1,5 +1,4 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import IAnswerQuestionBody from '../interfaces/IAnswerQuestionBody.interface';
 import { ChatService } from '../Service/chat.service';
 import { AnswerQuestionDto } from '../Dtos/AnswerQuestion.dto';
 import { AnswerQuestionWithTranscriptionDto } from '../Dtos/answerQuestionWithTranscription.dto';

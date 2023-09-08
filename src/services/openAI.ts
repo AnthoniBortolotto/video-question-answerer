@@ -7,7 +7,7 @@ import {
   ErrorResponse,
   ChatCompletionRequestMessage,
 } from 'openai';
-import { ModelType } from 'src/helpers/types/AITypes';
+import { ModelType } from 'src/chat/helpers/types/AITypes';
 
 interface IUseOpenAIOptions {
   messages: ChatCompletionRequestMessage[];
