@@ -44,7 +44,7 @@ export class ChatService {
         maxResponseLength: 1,
       })
     ).choices[0].message.content;
-    console.log('Retorno da moderação', moderationResult);
+   // console.log('Retorno da moderação', moderationResult);
 
     // denied by moderation
     if (moderationResult.toLowerCase().trim().substring(0, 2) === 'no') {
