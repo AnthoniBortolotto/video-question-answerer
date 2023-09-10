@@ -20,7 +20,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "dev": "pnpm clean && pnpm build && sls offline start",
-    "clean": "rimraf dist",
+    "clean": "rimraf dist .serverless s_chat.js serverless_sdk",
     "sls:deploy": "pnpm clean && pnpm build && sls deploy"
   },
   "dependencies": {
@@ -42,6 +42,7 @@
     "google-auth-library": "^8.7.0",
     "googleapis": "^112.0.0",
     "iterare": "^1.2.1",
+    "mime-db": "^1.52.0",
     "mime-types": "^2.1.35",
     "node-youtube-subtitles": "^1.1.0",
     "object-hash": "^3.0.0",

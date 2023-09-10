@@ -16,4 +16,3 @@ export const handler = async (event, context) => {
   return cachedServer(event, context);
 };
 
-module.exports.handler = handler;

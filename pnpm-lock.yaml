@@ -59,6 +59,9 @@ dependencies:
   iterare:
     specifier: ^1.2.1
     version: 1.2.1
+  mime-db:
+    specifier: ^1.52.0
+    version: 1.52.0
   mime-types:
     specifier: ^2.1.35
     version: 2.1.35
