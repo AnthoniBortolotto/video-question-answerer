@@ -13,7 +13,6 @@ export class ChatController {
 
   @Post()
   async answerQuestion(@Body() body: AnswerQuestionDto) {
-    return "tudo certo"
     return await this.chatService.sendResponse({
       question: body.question,
       videoId: body.videoId,
