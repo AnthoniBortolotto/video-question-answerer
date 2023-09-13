@@ -39,7 +39,7 @@ export function generateModerationMessages(
     return[
       {
         role: 'system',
-        content: `You are a back-end API service that checks if a string is appropriate, if it is, answer only 'yes', if it is not, answer only 'no', you should answer only this 2 words`,
+        content: `You are a back-end API service that checks if a string have harmful or hatred content, if it does not have, answer only 'yes', if it does, answer only 'no', you should answer only this 2 words`,
       },
       {
         role: 'user',
