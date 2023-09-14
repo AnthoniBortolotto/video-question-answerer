@@ -11,6 +11,9 @@ API using NestJS, Get an youtube video transcription and answer questions of it 
 $ npm install
 ```
 
+create a .env file according to the .env.example file.
+The transcription service to obtain Youtube videos transcriptions can be obtained in [this repository](https://github.com/AnthoniBortolotto/python-transcriptor-service)
+
 ## Running the app
 
 ```bash
@@ -22,19 +25,6 @@ $ npm run start:dev
 
 # production mode
 $ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
 ## Stay in touch

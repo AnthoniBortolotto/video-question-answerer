@@ -8,6 +8,7 @@ import { splitPrompts } from '../helpers/promptNormalizers/normalizers';
 import OpenAI from '../../services/openAI';
 import { getTranscription } from '../../services/transcriptor';
 import IAnswerQuestionBody from '../interfaces/IAnswerQuestionBody.interface';
+import { AxiosError } from 'axios';
 
 @Injectable()
 export class ChatService {
@@ -26,7 +27,10 @@ export class ChatService {
     //transcription
     let transcription = receivedTranscription;
     if (!transcription) {
-      transcription = await getTranscription(videoId, lang);
+      transcription = await getTranscription(videoId, lang).catch((err:AxiosError) => {
+        console.log('Erro na transcrição', err);
+        throw new InternalServerErrorException('Erro tentando obter transcrição, verifique se o vídeo está disponível e se o idioma está correto');
+      });
     }
     const transcriptionChunks = splitPrompts(transcription, 10000);
 
