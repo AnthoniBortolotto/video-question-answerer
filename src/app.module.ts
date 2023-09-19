@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { ChatController } from './chat/Controller/chat.controller';
-import { ChatModule } from './chat/Module/chat.module';
+
 import { ConfigModule } from '@nestjs/config';
+import { QuestionAnswererModule } from './question-answerer/module/question-answerer.module';
 
 @Module({
   imports: [
@@ -9,7 +9,7 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    ChatModule,
+    QuestionAnswererModule,
   ],
   controllers: [],
   providers: [],

@@ -21,7 +21,7 @@ provider:
    OPEN_AI_KEY: 'your-open-ai-key'
  timeout: 30
 functions:
- chat: # The name of the lambda function
+ question-answerer: # The name of the lambda function
    # The module 'handler' is exported in the file 'src/lambda'
    handler: dist/lambda.handler
    events:

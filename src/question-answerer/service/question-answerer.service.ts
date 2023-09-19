@@ -11,26 +11,24 @@ import IAnswerQuestionBody from '../interfaces/IAnswerQuestionBody.interface';
 import { AxiosError } from 'axios';
 
 @Injectable()
-export class ChatService {
-  sendIntro(): string {
-    return 'Welcome to the chat service!';
-  }
-
-  async sendResponse(
-    {
-      question,
-      lang = 'pt',
-      videoId,
-      receivedTranscription,
-    }: IAnswerQuestionBody
-  ): Promise<{ message: any }> {
+export class QuestionAnswererService {
+  async sendResponse({
+    question,
+    lang = 'pt',
+    videoId,
+    receivedTranscription,
+  }: IAnswerQuestionBody): Promise<{ message: any }> {
     //transcription
     let transcription = receivedTranscription;
     if (!transcription) {
-      transcription = await getTranscription(videoId, lang).catch((err:AxiosError) => {
-        console.log('Erro na transcrição', err);
-        throw new InternalServerErrorException('Erro tentando obter transcrição, verifique se o vídeo está disponível e se o idioma está correto');
-      });
+      transcription = await getTranscription(videoId, lang).catch(
+        (err: AxiosError) => {
+          console.log('Erro na transcrição', err);
+          throw new InternalServerErrorException(
+            'Erro tentando obter transcrição, verifique se o vídeo está disponível e se o idioma está correto',
+          );
+        },
+      );
     }
     const transcriptionChunks = splitPrompts(transcription, 10000);
 
@@ -47,7 +45,7 @@ export class ChatService {
         maxResponseLength: 1,
       })
     ).choices[0].message.content;
-   // console.log('Retorno da moderação', moderationResult);
+    // console.log('Retorno da moderação', moderationResult);
 
     // denied by moderation
     if (moderationResult.toLowerCase().trim().substring(0, 2) === 'no') {

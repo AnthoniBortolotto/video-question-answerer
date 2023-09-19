@@ -4,10 +4,10 @@ import {
   Configuration,
   CreateChatCompletionResponse,
   OpenAIApi,
-  ErrorResponse,
   ChatCompletionRequestMessage,
 } from 'openai';
-import { ModelType } from 'src/chat/helpers/types/AITypes';
+import { ModelType } from '../question-answerer/helpers/types/AITypes';
+
 
 interface IUseOpenAIOptions {
   messages: ChatCompletionRequestMessage[];

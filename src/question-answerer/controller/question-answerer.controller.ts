@@ -1,19 +1,18 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { ChatService } from '../Service/chat.service';
-import { AnswerQuestionDto } from '../Dtos/AnswerQuestion.dto';
-import { AnswerQuestionWithTranscriptionDto } from '../Dtos/answerQuestionWithTranscription.dto';
+
+import { AnswerQuestionDto } from '../dtos/AnswerQuestion.dto';
+import { AnswerQuestionWithTranscriptionDto } from '../dtos/answerQuestionWithTranscription.dto';
+import { QuestionAnswererService } from '../service/question-answerer.service';
 
 @Controller('/api/v1/answer-question')
-export class ChatController {
-  constructor(private readonly chatService: ChatService) {}
-  @Get()
-  receiveIntro(): string {
-    return this.chatService.sendIntro();
-  }
+export class QuestionAnswererController {
+  constructor(
+    private readonly questionAnswererService: QuestionAnswererService,
+  ) {}
 
   @Post()
   async answerQuestion(@Body() body: AnswerQuestionDto) {
-    return await this.chatService.sendResponse({
+    return await this.questionAnswererService.sendResponse({
       question: body.question,
       videoId: body.videoId,
       lang: body.lang,
@@ -23,7 +22,7 @@ export class ChatController {
   async answerQuestionWithTranscript(
     @Body() body: AnswerQuestionWithTranscriptionDto,
   ) {
-    return await this.chatService.sendResponse({
+    return await this.questionAnswererService.sendResponse({
       question: body.question,
       receivedTranscription: body.transcription,
       lang: body.lang,
