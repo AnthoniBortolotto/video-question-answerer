@@ -12,6 +12,8 @@ export class QuestionAnswererController {
 
   @Post()
   async answerQuestion(@Body() body: AnswerQuestionDto) {
+    console.log('entrou',);
+    return;
     return await this.questionAnswererService.sendResponse({
       question: body.question,
       videoId: body.videoId,

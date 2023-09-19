@@ -70,7 +70,7 @@ export class QuestionAnswererService {
     );
     await Promise.all(transcriptionChunksPromisses).catch((err) => {
       console.log('Erro na junção de transcrições', err);
-      throw new InternalServerErrorException('Error trying to join chunks');
+      throw new InternalServerErrorException('Erro na junção de transcrições');
     });
 
     //answer question

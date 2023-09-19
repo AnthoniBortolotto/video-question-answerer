@@ -47,9 +47,8 @@ export default class OpenAI {
       })
       .catch((err: AxiosError) => {
         console.log('erro do OpenAi', err?.response);
-        throw new InternalServerErrorException('Error in useOpenAI');
+        throw new InternalServerErrorException('Error no acesso ao OpenAI');
       });
-    // console.log('after request', completion.data.choices[0].message);
     return completion.data;
   }
 }

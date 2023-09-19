@@ -1,16 +1,31 @@
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class AnswerQuestionWithTranscriptionDto {
-  @IsNotEmpty()
-  @IsString()
+  @IsNotEmpty({
+    message: 'A pergunta não pode ser vazia',
+    always: true,
+  })
+  @IsString({
+    message: 'A pergunta deve ser uma string',
+    always: true,
+  })
   question: string;
 
-  @IsNotEmpty()
-  @IsString()
+  @IsNotEmpty({
+    message: 'A transcrição não pode ser vazia',
+    always: true,
+  })
+  @IsString({
+    message: 'A transcrição deve ser uma string',
+    always: true,
+  })
   transcription: string;
 
   @IsOptional()
-  @IsString()
+  @IsString({
+    message: 'O idioma deve ser uma string',
+    always: true,
+  })
   lang?: string;
 
   constructor(question, transcription, lang) {
