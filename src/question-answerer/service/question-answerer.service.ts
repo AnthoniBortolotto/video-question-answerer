@@ -39,7 +39,6 @@ export class QuestionAnswererService {
     const moderationMessages = generateModerationMessages(question);
     const moderationResult = (
       await AI.getCompletion({
-        model: 'gpt-3.5-turbo',
         messages: moderationMessages,
         temperature: 0.1,
         maxResponseLength: 1,
@@ -59,7 +58,6 @@ export class QuestionAnswererService {
       async (chunk) => {
         const chunkMessage = generateChunkMessages(chunk, question, lang);
         const IAResponse = await AI.getCompletion({
-          model: 'gpt-3.5-turbo-16k',
           messages: chunkMessage,
           temperature: 0.1,
         });
@@ -75,7 +73,6 @@ export class QuestionAnswererService {
     //answer question
     const joinedMessages = generateJoinChunkMessages(iaAnswers, question, lang);
     const IAResponse = await AI.getCompletion({
-      model: 'gpt-3.5-turbo-16k',
       messages: joinedMessages,
       temperature: 0.1,
     });

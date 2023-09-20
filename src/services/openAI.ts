@@ -34,7 +34,7 @@ export default class OpenAI {
 
   async getCompletion({
     messages,
-    model = 'text-davinci-003',
+    model = 'gpt-3.5-turbo-16k',
     temperature = 0.5,
     maxResponseLength = 1000,
   }: IUseOpenAIOptions): Promise<CreateChatCompletionResponse> {

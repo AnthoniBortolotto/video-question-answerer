@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post } from '@nestjs/common';
 
 import { AnswerQuestionDto } from '../dtos/AnswerQuestion.dto';
 import { AnswerQuestionWithTranscriptionDto } from '../dtos/answerQuestionWithTranscription.dto';
@@ -11,6 +11,7 @@ export class QuestionAnswererController {
   ) {}
 
   @Post()
+  @HttpCode(200)
   async answerQuestion(@Body() body: AnswerQuestionDto) {
     return await this.questionAnswererService.sendResponse({
       question: body.question,
@@ -19,6 +20,7 @@ export class QuestionAnswererController {
     });
   }
   @Post('/with-transcription')
+  @HttpCode(200)
   async answerQuestionWithTranscript(
     @Body() body: AnswerQuestionWithTranscriptionDto,
   ) {
