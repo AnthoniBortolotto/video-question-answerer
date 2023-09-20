@@ -17,7 +17,7 @@ export class QuestionAnswererService {
     lang = 'pt',
     videoId,
     receivedTranscription,
-  }: IAnswerQuestionBody): Promise<{ message: any }> {
+  }: IAnswerQuestionBody): Promise<{ message: string }> {
     //transcription
     let transcription = receivedTranscription;
     if (!transcription) {
@@ -45,7 +45,6 @@ export class QuestionAnswererService {
         maxResponseLength: 1,
       })
     ).choices[0].message.content;
-    // console.log('Retorno da moderação', moderationResult);
 
     // denied by moderation
     if (moderationResult.toLowerCase().trim().substring(0, 2) === 'no') {
