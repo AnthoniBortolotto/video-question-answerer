@@ -24,14 +24,6 @@ export default class OpenAI {
     this.openai = new OpenAIApi(configuration);
   }
 
-  async getModeration(question: string){
-    const moderationResult = await this.openai.createModeration({
-      model: 'text-moderation-stable',
-      input: question,
-    })
-    return moderationResult.data.results;
-  }
-
   async getCompletion({
     messages,
     model = 'gpt-3.5-turbo-16k',
