@@ -3,6 +3,8 @@
 /node_modules
 /.build
 .serverless
+s_question_answerer.js
+/serverless_sdk
 
 # Logs
 logs
