@@ -6,8 +6,6 @@ service: your-service
 plugins:
  - serverless-jetpack
  - serverless-offline
- - serverless-plugin-include-dependencies
- - serverless-plugin-common-excludes
 custom:
   includeDependencies:
     enableCaching: true
