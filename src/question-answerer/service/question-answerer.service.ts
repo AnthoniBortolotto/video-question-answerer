@@ -30,7 +30,7 @@ export class QuestionAnswererService {
         },
       );
     }
-    const transcriptionChunks = splitPrompts(transcription, 10000);
+
 
     const iaAnswers = new Array<string>();
     const AI = new OpenAI();
@@ -45,6 +45,8 @@ export class QuestionAnswererService {
       })
     ).choices[0].message.content;
 
+
+
     // denied by moderation
     if (moderationResult.toLowerCase().trim().substring(0, 2) === 'no') {
       return {
@@ -52,6 +54,8 @@ export class QuestionAnswererService {
           'Não é possível responder essa pergunta em razão dela ter conteúdo inapropriado',
       };
     }
+
+    const transcriptionChunks = splitPrompts(transcription, 10000);
 
     // chunks treatment
     const transcriptionChunksPromisses = transcriptionChunks.map(

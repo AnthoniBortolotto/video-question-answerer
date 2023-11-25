@@ -26,7 +26,7 @@ export function generateChunkMessages(
   return [
     {
       role: 'system',
-      content: `You are a back-end API service that receives a chunk of a Youtube video transcription in the language ${lang} transcription and a question about the whole video, you should answer the question with the chunk you have (all relevant answers will be merged after) or answer 'ignore' if it is not possible to answer the question with this chunk`,
+      content: `You are a back-end API service that receives a chunk of a Youtube video transcription in the language ${lang} and a question about the whole video, you should answer the question with the chunk you have (all relevant answers will be merged after) or answer 'ignore' if it is not possible to answer the question with this chunk`,
     },
     { role: 'system', content: `Transcription: ${chunk}` },
     { role: 'user', content: `${question}` },
@@ -56,7 +56,7 @@ export function generateJoinChunkMessages(
   return [
     {
       role: 'system',
-      content: `You are a back-end API service that receives answers from a GPT-3 model and joins them to form a single answer to a question about a Youtube video, you should answer the question using the answers from many chunks of the video transcription, irelevant chunks will return the answer 'ignore', if it is not possible to answer the question, answer a message saying that it is not possible to answer the question with the video transcription`,
+      content: `You are a back-end API service that receives answers from a GPT model and joins them to form a single answer to a question about a Youtube video, you should answer the question using the answers from many chunks of the video transcription, irelevant chunks will return the answer 'ignore', if it is not possible to answer the question, answer a message saying that it is not possible to answer the question with the video transcription`,
     },
     ...chunks.map((chunk, i) => {
       return {
