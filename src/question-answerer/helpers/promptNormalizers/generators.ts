@@ -1,7 +1,4 @@
-import {
-  ChatCompletionRequestMessage,
-  ChatCompletionRequestMessageRoleEnum,
-} from 'openai';
+import { ChatCompletionMessageParam } from 'openai/resources';
 
 export function generatePrompt(receivedMessage: string, question: string) {
   return `Você receberá a transcrição de um vídeo no Youtube e deve responder perguntas e responder baseado no texto da transcrição, se a resposta não estiver na transcrição responda que  não é possível responder essa pergunta com base no vídeo
@@ -18,6 +15,38 @@ export function generateChunkPrompt(chunk: string, question: string) {
     `;
 }
 
+export function generateModerationMessages(
+  question: string,
+): ChatCompletionMessageParam[] {
+  return [
+    {
+      role: 'system',
+      content: `You are a back-end API service that checks if a string have harmful or hatred content, if it does not have, answer only 'yes', if it does, answer only 'no', you should answer only this 2 words`,
+    },
+    {
+      role: 'user',
+      content: `${question}`,
+    },
+  ];
+}
+
+export function generateQuestionAnswererMessages(
+  transcription: string,
+  question: string,
+  lang: string,
+): ChatCompletionMessageParam[] {
+  return [
+    {
+      role: 'system',
+      content: `You are a back-end API service that receives a Youtube video transcription in the language ${lang} and a question about the whole video, you should answer the question with the the transcription, names and slangs could have been written wrong in the transcription`,
+    },
+    { role: 'system', content: `Transcription: ${transcription}` },
+    { role: 'user', content: `${question}` },
+  ];
+}
+
+/*
+
 export function generateChunkMessages(
   chunk: string,
   question: string,
@@ -33,20 +62,7 @@ export function generateChunkMessages(
   ];
 }
 
-export function generateModerationMessages(
-  question: string,
-): ChatCompletionRequestMessage[]{
-    return[
-      {
-        role: 'system',
-        content: `You are a back-end API service that checks if a string have harmful or hatred content, if it does not have, answer only 'yes', if it does, answer only 'no', you should answer only this 2 words`,
-      },
-      {
-        role: 'user',
-        content: `${question}`,
-      }
-    ]
-}
+
 
 export function generateJoinChunkMessages(
   chunks: string[],
@@ -67,3 +83,6 @@ export function generateJoinChunkMessages(
     { role: 'user', content: `${question}` },
   ];
 }
+
+revisar
+*/

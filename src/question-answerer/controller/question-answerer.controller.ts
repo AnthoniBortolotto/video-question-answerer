@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, Query } from '@nestjs/common';
 
 import { AnswerQuestionDto } from '../dtos/AnswerQuestion.dto';
 import { AnswerQuestionWithTranscriptionDto } from '../dtos/answerQuestionWithTranscription.dto';
@@ -10,17 +10,15 @@ export class QuestionAnswererController {
     private readonly questionAnswererService: QuestionAnswererService,
   ) {}
 
-  @Post()
-  @HttpCode(200)
-  async answerQuestion(@Body() body: AnswerQuestionDto) {
+  @Get()
+  async answerQuestion(@Query() query: AnswerQuestionDto) {
     return await this.questionAnswererService.sendResponse({
-      question: body.question,
-      videoId: body.videoId,
-      lang: body.lang,
+      question: query.question,
+      videoId: query.videoId,
+      lang: query.lang,
     });
   }
   @Post('/with-transcription')
-  @HttpCode(200)
   async answerQuestionWithTranscript(
     @Body() body: AnswerQuestionWithTranscriptionDto,
   ) {
