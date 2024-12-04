@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 
 import { ConfigModule } from '@nestjs/config';
 import { QuestionAnswererModule } from './question-answerer/v1/module/question-answerer.module';
+import { ClipsGeneratorModule } from './clips-generator/v1/module/clips-generator.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { QuestionAnswererModule } from './question-answerer/v1/module/question-a
       envFilePath: '.env',
     }),
     QuestionAnswererModule,
+    ClipsGeneratorModule,
   ],
   controllers: [],
   providers: [],

@@ -1,0 +1,8 @@
+/**
+ * Normalize the text containing the clips names to remove unentended characters
+ * @param clipsNames Text generated containing the clips names
+ * @returns the text with the clips names normalized
+ */
+export function normalizedClipsNames(clipsNames: string): string {
+return clipsNames.replace(/[*]/g, '');
+}

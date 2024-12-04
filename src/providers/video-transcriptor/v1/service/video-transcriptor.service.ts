@@ -53,21 +53,36 @@ export class VideoTranscriptorService {
   /**
    * Normalize the transcription to be sent to the openai service
    * @param transcription the response from the transcriptor service
-   * @returns a formatted transcription with the interval and text
+   * @param videoStart the start of the video to get the transcription
+   * @param videoEnd the end of the video, if not provided will get the whole transcription
+   * @returns a formatted transcription with the interval and text between the start and end of the video
    * @description format the transcription to be sent to the openai service, can cause a bug if the video is longer than 24 hours, but openai limit will be reached before that
    */
   normalizeTranscriptionDialogues(
     transcription: ITranscriptorServiceDialogueResponse,
+    videoStart = '00:00:00',
+    videoEnd?: string,
   ): string[] {
-    // for test purposes, we are only getting the first 2000 dialogues
-    return transcription.dialogues.map((dialogue) => {
-      const formattedStart = new Date(dialogue.start * 1000)
-        .toISOString()
-        .substring(11, 19);
-      const formattedEnd = new Date(dialogue.end * 1000)
-        .toISOString()
-        .substring(11, 19);
-      return `${formattedStart}: ${dialogue.text}`;
-    }).slice(0, 2000);
+    const videoStartDate = new Date(`1970-01-01Z${videoStart}`);
+    const videoEndDate = videoEnd && new Date(`1970-01-01Z${videoEnd}`);
+
+    const transcriptionDialogues = new Array<string>();
+    for (const currentItem of transcription.dialogues) {
+      const start = new Date(currentItem.start * 1000);
+      const end = new Date(currentItem.end * 1000);
+      if (videoStartDate > start) {
+        continue;
+      }
+      if (videoEndDate && videoEndDate < end) {
+        break;
+      }
+      const formattedStart = start.toISOString().substring(11, 19);
+      const formattedEnd = end.toISOString().substring(11, 19);
+      transcriptionDialogues.push(
+        `${formattedStart} : ${formattedEnd} - ${currentItem.text}`,
+      );
+    }
+
+    return transcriptionDialogues;
   }
 }

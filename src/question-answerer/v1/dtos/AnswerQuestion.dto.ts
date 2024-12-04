@@ -1,17 +1,17 @@
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class AnswerQuestionDto {
-  @IsNotEmpty({ message: 'A pergunta não pode ser vazia', always: true })
+  @IsNotEmpty({ message: 'The question must not be empty', always: true })
   @IsString({
-    message: 'A pergunta deve ser uma string',
+    message: 'The question must be a string',
     always: true,
   })
   question: string;
-  @IsNotEmpty({ message: 'O id do vídeo não pode ser vazio', always: true })
-  @IsString({ message: 'O id do vídeo deve ser uma string', always: true })
+  @IsNotEmpty({ message: 'The video Id can not be empty', always: true })
+  @IsString({ message: 'The video Id must be a string', always: true })
   videoId: string;
 
   @IsOptional()
-  @IsString({ message: 'O idioma deve ser uma string', always: true })
+  @IsString({ message: 'The language must be a string', always: true })
   lang?: string;
 }
