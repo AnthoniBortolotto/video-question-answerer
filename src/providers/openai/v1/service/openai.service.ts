@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { AxiosError } from 'axios';
 import OpenAI, { ClientOptions } from 'openai';
 import { IUseOpenAIOptions } from '../interfaces/use-open-ai-options.interface';
@@ -29,8 +29,8 @@ export class OpenaiService {
         temperature: temperature,
       })
       .catch((err: AxiosError) => {
-        console.log('erro do OpenAi', err?.response || err);
-        throw new InternalServerErrorException('Error no acesso ao OpenAI');
+        Logger.error('error on OpenAI getCompletion', err, err?.response?.data);
+        throw new InternalServerErrorException('Error on accessing OpenAI service');
       });
     return completion.choices[0].message;
   }
