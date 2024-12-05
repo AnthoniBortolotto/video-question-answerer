@@ -12,38 +12,28 @@ export class ClipsGeneratorService {
     private readonly videoTranscriptorService: VideoTranscriptorService,
   ) {}
 
-  async generateClips(
-    videoId: string,
-    { lang = 'en', ...generateClipsDto }: GenerateClipsDto,
-  ) {
-    const rawTranscription =
-      await this.videoTranscriptorService.getTranscriptionDialogues(
-        videoId,
-        lang,
-      );
+  async generateClips(videoId: string, generateClipsDto: GenerateClipsDto) {
+    const rawTranscription = await this.videoTranscriptorService.getTranscriptionDialogues(
+      videoId,
+      generateClipsDto.lang,
+    );
+
+    const videoStartDate = generateClipsDto.videoStart && new Date(`1970-01-01Z${generateClipsDto.videoStart}`);
+    const videoEndDate = generateClipsDto.videoEnd && new Date(`1970-01-01Z${generateClipsDto.videoEnd}`);
+
     const formattedTranscription = this.videoTranscriptorService
-      .normalizeTranscriptionDialogues(
-        rawTranscription,
-        generateClipsDto.videoStart,
-        generateClipsDto.videoEnd,
-      )
+      .normalizeTranscriptionDialogues(rawTranscription, videoStartDate, videoEndDate)
       .join('; ');
     /*
     todo: 
     - error handling
     - excel file generation
     - token counter
-    - validate max and min amount
-    - validate time
     */
     const completion = await this.opeanAiService.getCompletion({
       temperature: 1,
       messages: generateClipsMessage(formattedTranscription, {
-        lang,
-        maxClips: Number(generateClipsDto.maxClips),
-        minClips: Number(generateClipsDto.minClips),
-        maxClipDuration: Number(generateClipsDto.maxClipDuration),
-        minClipDuration: Number(generateClipsDto.minClipDuration),
+        ...generateClipsDto,
       }),
     });
 

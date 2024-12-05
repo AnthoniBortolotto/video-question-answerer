@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import axios from 'axios';
 import { ITranscriptorServiceDialogueResponse } from '../interfaces/transcriptor-service-dialogue-response.interface';
 
@@ -60,20 +64,18 @@ export class VideoTranscriptorService {
    */
   normalizeTranscriptionDialogues(
     transcription: ITranscriptorServiceDialogueResponse,
-    videoStart = '00:00:00',
-    videoEnd?: string,
+    videoStart: Date,
+    videoEnd?: Date,
   ): string[] {
-    const videoStartDate = new Date(`1970-01-01Z${videoStart}`);
-    const videoEndDate = videoEnd && new Date(`1970-01-01Z${videoEnd}`);
 
     const transcriptionDialogues = new Array<string>();
     for (const currentItem of transcription.dialogues) {
       const start = new Date(currentItem.start * 1000);
       const end = new Date(currentItem.end * 1000);
-      if (videoStartDate > start) {
+      if (videoStart > start) {
         continue;
       }
-      if (videoEndDate && videoEndDate < end) {
+      if (videoEnd && videoEnd < end) {
         break;
       }
       const formattedStart = start.toISOString().substring(11, 19);

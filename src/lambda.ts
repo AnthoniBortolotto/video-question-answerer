@@ -8,7 +8,9 @@ let cachedServer;
 export const handler = async (event, context) => {
   if (!cachedServer) {
     const nestApp = await NestFactory.create(AppModule);
-    nestApp.useGlobalPipes(new ValidationPipe());
+    nestApp.useGlobalPipes(new ValidationPipe({
+      transform: true,
+    }));
     await nestApp.init();
     cachedServer = serverlessExpress({
       app: nestApp.getHttpAdapter().getInstance(),
