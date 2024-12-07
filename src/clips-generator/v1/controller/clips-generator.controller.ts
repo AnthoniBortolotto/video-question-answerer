@@ -7,13 +7,12 @@ export class ClipsGeneratorController {
   constructor(private readonly clipsGeneratorService: ClipsGeneratorService) {}
 
   @Get(':videoId')
-  @UsePipes(new ValidationPipe({ transform: true }))
-  async generateClips(
-    @Param('videoId') videoId: string,
-    @Query() generateClipsDto: GenerateClipsDto,
-  ) {
-
-   
+  async generateClips(@Param('videoId') videoId: string, @Query() generateClipsDto: GenerateClipsDto) {
     return this.clipsGeneratorService.generateClips(videoId, generateClipsDto);
   }
+  @Get(':videoId/format/excel')
+  async generateClipsExcel(@Param('videoId') videoId: string, @Query() generateClipsDto: GenerateClipsDto) {
+    return this.clipsGeneratorService.generateClipsExcel(videoId, generateClipsDto);
+  }
+
 }

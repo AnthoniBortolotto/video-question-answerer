@@ -43,7 +43,8 @@
     "rxjs": "^7.2.0",
     "serverless-jetpack": "^0.11.2",
     "serverless-offline": "^12.0.4",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

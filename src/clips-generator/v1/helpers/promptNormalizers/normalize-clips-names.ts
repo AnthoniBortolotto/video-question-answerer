@@ -5,7 +5,7 @@ import { InternalServerErrorException } from "@nestjs/common";
  * @param clipsNames Text generated containing the clips names
  * @returns the text with the clips names normalized
  */
-export function normalizedClipsNames(clipsNames: string): string {
+export function normalizeClipsNames(clipsNames: string): string {
   try {
     return clipsNames.replace(/[*]/g, '');
   } catch (error) {
