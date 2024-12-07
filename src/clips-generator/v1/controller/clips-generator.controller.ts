@@ -8,6 +8,7 @@ export class ClipsGeneratorController {
 
   @Get(':videoId')
   async generateClips(@Param('videoId') videoId: string, @Query() generateClipsDto: GenerateClipsDto) {
+    return generateClipsDto;
     return this.clipsGeneratorService.generateClips(videoId, generateClipsDto);
   }
   @Get(':videoId/format/excel')

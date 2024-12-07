@@ -48,7 +48,7 @@ export class ClipsGeneratorService {
       /*
     todo: 
     - Swagger documentation
-    - Add custom validation pipe
+    - treat not found video
     */
 
       const completion = await this.opeanAiService.getCompletion({
