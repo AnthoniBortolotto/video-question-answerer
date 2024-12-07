@@ -4,12 +4,15 @@ import { AxiosError } from 'axios';
 import { OpenaiService } from 'src/providers/openai/v1/service/openai.service';
 import { VideoTranscriptorService } from 'src/providers/video-transcriptor/v1/service/video-transcriptor.service';
 import { generateModerationMessages, generateQuestionAnswererMessages } from '../helpers/promptNormalizers/generators';
+import { TokenCounterService } from 'src/providers/token-counter/v1/service/token-counter.service';
+import { GPT4_MAX_TOKENS } from 'src/providers/token-counter/v1/helpers/constants/models-max-tokens.contant';
 
 @Injectable()
 export class QuestionAnswererService {
   constructor(
     private readonly opeanAiService: OpenaiService,
     private readonly videoTranscriptorService: VideoTranscriptorService,
+    private readonly tokenCounterService: TokenCounterService,
   ) {}
 
   async sendResponse({
@@ -49,7 +52,15 @@ export class QuestionAnswererService {
           message: 'This question was denied by moderation and cannot be answered due to its inappropriate content.',
         };
       }
+      const transcriptionIsTooLong = await this.tokenCounterService.verifyIfPromptFits(
+        transcription,
+        'gpt4',
+        GPT4_MAX_TOKENS,
+      );
 
+      if (!transcriptionIsTooLong) {
+        throw new BadRequestException('The video transcription is too long, try to use the videoStart and videoEnd parameters, to reduce the transcription size');
+      }
       const IAResponse = await this.opeanAiService.getCompletion({
         messages: generateQuestionAnswererMessages(transcription, question, lang),
         temperature: 0.1,
