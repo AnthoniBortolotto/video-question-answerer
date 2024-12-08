@@ -1,7 +1,7 @@
-import { Controller, Get, Param, Query, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ClipsGeneratorService } from '../service/clips-generator.service';
-import { GenerateClipsDto } from '../dtos/generate-clips.dto';
-import { ApiQuery, ApiResponse, ApiResponseProperty } from '@nestjs/swagger';
+import { GenerateClipsQueryDto } from '../dtos/generate-clips-query.dto';
+import { ApiResponse } from '@nestjs/swagger';
 
 @Controller('/api/v1/clips-generator')
 export class ClipsGeneratorController {
@@ -27,12 +27,12 @@ export class ClipsGeneratorController {
   })
   async generateClips(
     @Param('videoId') videoId: string,
-    @Query() generateClipsDto: GenerateClipsDto,
+    @Query() generateClipsDto: GenerateClipsQueryDto,
   ): Promise<{ message: string; clips: string }> {
     return this.clipsGeneratorService.generateClips(videoId, generateClipsDto);
   }
   @Get(':videoId/format/excel')
-  async generateClipsExcel(@Param('videoId') videoId: string, @Query() generateClipsDto: GenerateClipsDto) {
+  async generateClipsExcel(@Param('videoId') videoId: string, @Query() generateClipsDto: GenerateClipsQueryDto) {
     return this.clipsGeneratorService.generateClipsExcel(videoId, generateClipsDto);
   }
 }

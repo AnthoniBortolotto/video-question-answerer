@@ -1,23 +1,21 @@
-import { Body, Controller, Get, HttpCode, Post, Query } from '@nestjs/common';
-
-import { AnswerQuestionDto } from '../dtos/AnswerQuestion.dto';
-import { AnswerQuestionWithTranscriptionDto } from '../dtos/answerQuestionWithTranscription.dto';
+import { Body, Controller, Get, HttpCode, Param, Post, Query } from '@nestjs/common';
+import { AnswerQuestionWithTranscriptionBodyDto } from '../dtos/answer-question-with-transcription-body.dto';
 import { QuestionAnswererService } from '../service/question-answerer.service';
 import {
   ApiBadRequestResponse,
   ApiBody,
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
+  ApiParam,
   ApiResponse,
 } from '@nestjs/swagger';
+import { AnswerQuestionQueryDto } from '../dtos/answer-question-query.dto';
 
 @Controller('/api/v1/answer-question')
 export class QuestionAnswererController {
   constructor(private readonly questionAnswererService: QuestionAnswererService) {}
 
-
-
-  @Get()
+  @Get('/:videoId')
   @ApiResponse({
     status: 200,
     description: 'The question was answered successfully',
@@ -33,8 +31,6 @@ export class QuestionAnswererController {
         },
       },
     },
-    //add example including the question and the answer and a question that was denied by moderation
-
     examples: {
       Q1: {
         summary: 'The question answered successfully',
@@ -59,10 +55,15 @@ export class QuestionAnswererController {
   @ApiNotFoundResponse({
     description: 'The transcription was not found, please check if the videoId and language are correct',
   })
-  async answerQuestion(@Query() query: AnswerQuestionDto): Promise<{ message: string }> {
+  @ApiParam({
+    name: 'videoId',
+    type: 'string',
+    description: 'The videoId of the video in Youtube',
+  })
+  async answerQuestion(@Param('videoId') videoId, @Query() query: AnswerQuestionQueryDto): Promise<{ message: string }> {
     return await this.questionAnswererService.sendResponse({
       question: query.question,
-      videoId: query.videoId,
+      videoId: videoId,
       lang: query.lang,
     });
   }
@@ -107,7 +108,7 @@ export class QuestionAnswererController {
   })
   @HttpCode(200)
   @ApiBody({
-    type: AnswerQuestionWithTranscriptionDto,
+    type: AnswerQuestionWithTranscriptionBodyDto,
     examples: {
       Q1: {
         summary: 'The question answered successfully',
@@ -127,7 +128,7 @@ export class QuestionAnswererController {
       },
     }
   })
-  async answerQuestionWithTranscript(@Body() body: AnswerQuestionWithTranscriptionDto) {
+  async answerQuestionWithTranscript(@Body() body: AnswerQuestionWithTranscriptionBodyDto) {
     return await this.questionAnswererService.sendResponse({
       question: body.question,
       receivedTranscription: body.transcription,

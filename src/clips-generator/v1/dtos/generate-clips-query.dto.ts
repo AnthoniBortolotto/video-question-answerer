@@ -4,13 +4,13 @@ import { IsInt, IsNumberString, IsOptional, IsString, Matches, Max, Min } from '
 import { IsTimeString } from '../validators/time-string.validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class GenerateClipsDto {
+export class GenerateClipsQueryDto {
   @IsOptional()
   @IsString({ message: 'The language must be a string', always: true })
   @ApiProperty({
     example: 'en-US',
     nullable: true,
-
+    description: 'The language of the question in BCP 47 format, defaults to en',
   })
   lang?: string;
 

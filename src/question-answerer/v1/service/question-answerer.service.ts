@@ -1,6 +1,5 @@
-import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import IAnswerQuestionBody from '../interfaces/IAnswerQuestionBody.interface';
-import { AxiosError } from 'axios';
 import { OpenaiService } from 'src/providers/openai/v1/service/openai.service';
 import { VideoTranscriptorService } from 'src/providers/video-transcriptor/v1/service/video-transcriptor.service';
 import { generateModerationMessages, generateQuestionAnswererMessages } from '../helpers/promptNormalizers/generators';

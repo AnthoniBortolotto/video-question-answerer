@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
-import { GenerateClipsDto } from '../dtos/generate-clips.dto';
+import { GenerateClipsQueryDto } from '../dtos/generate-clips-query.dto';
 import { OpenaiService } from 'src/providers/openai/v1/service/openai.service';
 import { VideoTranscriptorService } from 'src/providers/video-transcriptor/v1/service/video-transcriptor.service';
 import { generateClipsMessage } from '../helpers/promptNormalizers/generate-clips-message';
@@ -18,7 +18,7 @@ export class ClipsGeneratorService {
     private readonly excelFileGeneratorService: ExcelFileGeneratorService,
   ) {}
 
-  async generateClips(videoId: string, generateClipsDto: GenerateClipsDto) {
+  async generateClips(videoId: string, generateClipsDto: GenerateClipsQueryDto) {
     try {
       const rawTranscription = await this.videoTranscriptorService.getTranscriptionDialogues(
         videoId,
@@ -45,10 +45,6 @@ export class ClipsGeneratorService {
       }
 
       const promptMessages = generateClipsMessage(formattedTranscription, generateClipsDto);
-      /*
-    todo: 
-    - Swagger documentation
-    */
 
       const completion = await this.opeanAiService.getCompletion({
         temperature: 1,
@@ -66,7 +62,7 @@ export class ClipsGeneratorService {
     }
   }
 
-  async generateClipsExcel(videoId: string, generateClipsDto: GenerateClipsDto) {
+  async generateClipsExcel(videoId: string, generateClipsDto: GenerateClipsQueryDto) {
     try {
       const clips = await this.generateClips(videoId, generateClipsDto);
       const clipsModels = clips.clips.split(';').map((clip) => new ClipsExcelRowModel(clip));
