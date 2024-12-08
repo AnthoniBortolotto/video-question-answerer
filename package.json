@@ -1,7 +1,7 @@
 {
-  "name": "question-answerer",
+  "name": "insight-cutter",
   "version": "0.0.1",
-  "description": "API using NestJS, Get an youtube video transcription and answer questions of it using OPENAI",
+  "description": "API using NestJS, Get an youtube video transcription and answer questions about it or generate clips from it using OpenAI",
   "author": "Anthoni Bortolotto Martinelli",
   "private": true,
   "license": "MIT",

@@ -17,7 +17,7 @@ export class QuestionAnswererService {
 
   async sendResponse({
     question,
-    lang = 'pt',
+    lang = 'en',
     videoId,
     receivedTranscription,
   }: IAnswerQuestionBody): Promise<{ message: string }> {
@@ -26,14 +26,7 @@ export class QuestionAnswererService {
       let transcription = receivedTranscription;
 
       if (!transcription) {
-        transcription = await this.videoTranscriptorService
-          .getTranscriptionText(videoId, lang)
-          .catch((err: AxiosError) => {
-            Logger.error('Error getting transcription', err);
-            throw new NotFoundException(
-              'Transcription not found. Please check if the videoId and language are correct',
-            );
-          });
+        transcription = await this.videoTranscriptorService.getTranscriptionText(videoId, lang);
       }
 
       //moderation
@@ -59,7 +52,9 @@ export class QuestionAnswererService {
       );
 
       if (!transcriptionIsTooLong) {
-        throw new BadRequestException('The video transcription is too long, try to use the videoStart and videoEnd parameters, to reduce the transcription size');
+        throw new BadRequestException(
+          'The video transcription is too long, try to use the videoStart and videoEnd parameters, to reduce the transcription size',
+        );
       }
       const IAResponse = await this.opeanAiService.getCompletion({
         messages: generateQuestionAnswererMessages(transcription, question, lang),

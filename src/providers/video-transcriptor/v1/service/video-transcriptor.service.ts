@@ -1,4 +1,10 @@
-import { BadRequestException, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import axios from 'axios';
 import { ITranscriptorServiceDialogueResponse } from '../interfaces/transcriptor-service-dialogue-response.interface';
 
@@ -11,6 +17,14 @@ export class VideoTranscriptorService {
     const requestUrl = `${baseUrl}/${videoId}?lang=${language}`;
     const axiosResponse = await axios.get<ITranscriptorServiceDialogueResponse>(requestUrl).catch((err) => {
       Logger.error('error on getTranscriptionDialogues', err, err.response?.data);
+      if (
+        err.response?.data?.detail ===
+        'No transcription found in the language en please try another language or check the video id'
+      ) {
+        throw new NotFoundException(
+          'No transcription found, please try another language or check if the video id is valid',
+        );
+      }
       throw new InternalServerErrorException('Error on accessing transcription service');
     });
     return axiosResponse.data;
@@ -21,6 +35,14 @@ export class VideoTranscriptorService {
     const requestUrl = `${baseUrl}/${videoId}?lang=${language}`;
     const axiosResponse = await axios.get<ITranscriptorServiceTextResponse>(requestUrl).catch((err) => {
       Logger.error('error on getTranscriptionText ', err, err.response?.data);
+      if (
+        err.response?.data?.detail ===
+        'No transcription found in the language en please try another language or check the video id'
+      ) {
+        throw new NotFoundException(
+          'No transcription found, please try another language or check if the video id is valid',
+        );
+      }
       throw new InternalServerErrorException('Error on accessing transcription service');
     });
     return axiosResponse.data.transcription;

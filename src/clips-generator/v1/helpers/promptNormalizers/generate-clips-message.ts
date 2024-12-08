@@ -24,7 +24,7 @@ export function generateClipsMessage(
       prompt += `, generate at least ${clipDetails.minClips} clips`;
     }
 
-    prompt += `. The video dialogues are in ${clipDetails.lang} and the title must be in the same language`;
+    prompt += `. The video dialogues are in ${clipDetails.lang || 'en'} and the title must be in the same language`;
 
     return [
       {

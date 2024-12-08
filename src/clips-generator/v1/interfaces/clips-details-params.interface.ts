@@ -1,5 +1,5 @@
 export interface IClipsDetailsParams {
-  lang;
+  lang?: string;
   maxClips?: number;
 
   minClips?: number;
