@@ -1,9 +1,9 @@
-# Youtube Videos question answerer
+# InsightCutter API
 
 
 ## Description
 
-API using NestJS, Get an youtube video transcription and answer questions of it using OPENAI
+API using NestJS, Get an youtube video transcription and answer questions about it or generate clips from it using OpenAI
 
 ## Installation
 
