@@ -4,7 +4,7 @@ import { OpenaiService } from 'src/providers/openai/v1/service/openai.service';
 import { VideoTranscriptorService } from 'src/providers/video-transcriptor/v1/service/video-transcriptor.service';
 import { generateModerationMessages, generateQuestionAnswererMessages } from '../helpers/promptNormalizers/generators';
 import { TokenCounterService } from 'src/providers/token-counter/v1/service/token-counter.service';
-import { GPT4_MAX_TOKENS } from 'src/providers/token-counter/v1/helpers/constants/models-max-tokens.contant';
+import { GPT4o_MINI_MAX_TOKENS } from 'src/providers/token-counter/v1/helpers/constants/models-max-tokens.contant';
 
 @Injectable()
 export class QuestionAnswererService {
@@ -47,7 +47,7 @@ export class QuestionAnswererService {
       const transcriptionIsTooLong = await this.tokenCounterService.verifyIfPromptFits(
         transcription,
         'gpt4',
-        GPT4_MAX_TOKENS,
+        GPT4o_MINI_MAX_TOKENS,
       );
 
       if (!transcriptionIsTooLong) {

@@ -5,7 +5,7 @@ import { VideoTranscriptorService } from 'src/providers/video-transcriptor/v1/se
 import { generateClipsMessage } from '../helpers/promptNormalizers/generate-clips-message';
 import { normalizeClipsNames } from '../helpers/promptNormalizers/normalize-clips-names';
 import { TokenCounterService } from 'src/providers/token-counter/v1/service/token-counter.service';
-import { GPT4_MAX_TOKENS } from 'src/providers/token-counter/v1/helpers/constants/models-max-tokens.contant';
+import { GPT4o_MAX_TOKENS } from 'src/providers/token-counter/v1/helpers/constants/models-max-tokens.contant';
 import { ExcelFileGeneratorService } from 'src/providers/excel-file-generator/v1/service/excel-file-generator.service';
 import { ClipsExcelRowModel } from '../models/clips-excel-rows.model';
 
@@ -35,7 +35,7 @@ export class ClipsGeneratorService {
       const transcriptionIsTooLong = await this.tokenCounterService.verifyIfPromptFits(
         formattedTranscription,
         'gpt4',
-        GPT4_MAX_TOKENS,
+        GPT4o_MAX_TOKENS,
       );
 
       if (!transcriptionIsTooLong) {
@@ -47,8 +47,9 @@ export class ClipsGeneratorService {
       const promptMessages = generateClipsMessage(formattedTranscription, generateClipsDto);
 
       const completion = await this.opeanAiService.getCompletion({
-        temperature: 1,
+        temperature: 0.5,
         messages: promptMessages,
+        model: 'gpt-4o',
       });
 
       const normalizedClipsText = normalizeClipsNames(completion.content);
