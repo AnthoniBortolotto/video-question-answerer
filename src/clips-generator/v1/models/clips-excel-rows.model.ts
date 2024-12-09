@@ -11,6 +11,9 @@ export class ClipsExcelRowModel {
       const clipTimeSplited = clipTextSplited[0].split(' - ');
       this['Clip Start'] = clipTimeSplited[0]?.trim();
       this['Clip End'] = clipTimeSplited[1]?.trim();
+      if (this['Clip End'].endsWith(':')) {
+        this['Clip End'] = this['Clip End'].slice(0, -1);
+      }
     } catch (error) {
       Logger.error('error on ClipsExcelRowModel constructor', error);
       throw new InternalServerErrorException();
