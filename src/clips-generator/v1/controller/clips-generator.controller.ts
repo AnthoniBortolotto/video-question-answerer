@@ -1,7 +1,7 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ClipsGeneratorService } from '../service/clips-generator.service';
 import { GenerateClipsQueryDto } from '../dtos/generate-clips-query.dto';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiInternalServerErrorResponse, ApiResponse } from '@nestjs/swagger';
 
 @Controller('/api/v1/clips-generator')
 export class ClipsGeneratorController {
@@ -25,6 +25,33 @@ export class ClipsGeneratorController {
       clips: `00:00:10 - 00:10:30 "Nome do clipe"; ...`,
     },
   })
+  @ApiBadRequestResponse({
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+        },
+      },
+    },
+    example: {
+      message:
+        'The video transcription is too long, try to use the videoStart and videoEnd parameters, to reduce the transcription size',
+    },
+  })
+  @ApiInternalServerErrorResponse({
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+        },
+      },
+    },
+    example: {
+      message: 'Internal server error',
+    },
+  })
   async generateClips(
     @Param('videoId') videoId: string,
     @Query() generateClipsDto: GenerateClipsQueryDto,
@@ -32,7 +59,54 @@ export class ClipsGeneratorController {
     return this.clipsGeneratorService.generateClips(videoId, generateClipsDto);
   }
   @Get(':videoId/format/excel')
-  async generateClipsExcel(@Param('videoId') videoId: string, @Query() generateClipsDto: GenerateClipsQueryDto) {
+  @ApiResponse({
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+        },
+        file: {
+          type: 'string',
+        },
+      },
+    },
+    example: {
+      message: 'Clips generated successfully',
+      file: 'Buffer',
+    },
+  })
+  @ApiBadRequestResponse({
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+        },
+      },
+    },
+    example: {
+      message:
+        'The video transcription is too long, try to use the videoStart and videoEnd parameters, to reduce the transcription size',
+    },
+  })
+  @ApiInternalServerErrorResponse({
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+        },
+      },
+    },
+    example: {
+      message: 'Internal server error',
+    },
+  })
+  async generateClipsExcel(
+    @Param('videoId') videoId: string,
+    @Query() generateClipsDto: GenerateClipsQueryDto,
+  ): Promise<{ message: string; file: Buffer }> {
     return this.clipsGeneratorService.generateClipsExcel(videoId, generateClipsDto);
   }
 }
