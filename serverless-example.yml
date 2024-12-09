@@ -24,10 +24,18 @@ functions:
    handler: dist/lambda.handler
    events:
      - http:
-        path: /api/v1/answer-question
-        method: POST
+        path: /api/v1/answer-question/:id
+        method: GET
      - http:
         path: /api/v1/answer-question/with-transcription
         method: POST
-    
+   clips-generator: 
+    events:
+      - http:
+          path: /api/v1/clips-generator/:id
+          method: GET
+      - http:
+          path: /api/v1/clips-generator/:id/format/excel
+          method: GET
+
          
