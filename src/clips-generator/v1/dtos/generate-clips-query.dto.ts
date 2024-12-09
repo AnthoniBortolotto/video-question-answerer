@@ -20,7 +20,7 @@ export class GenerateClipsQueryDto {
     always: true,
   })
   @Max(10, { message: 'The maximum number of clips must be less than 10' })
-  @Min(1, { message: 'The maximum number of clips must be greater than 1' })
+  @Min(5, { message: 'The maximum number of clips must be greater than 1' })
   @Type(() => Number)
   maxClips?: number;
   @IsOptional()
@@ -28,8 +28,8 @@ export class GenerateClipsQueryDto {
     message: 'The minimum number of clips must be an integer',
     always: true,
   })
-  @Max(10, { message: 'The minimum number of clips must be less than 10' })
-  @Min(1, { message: 'The minimum number of clips must be greater than 1' })
+  @Max(5, { message: 'The minimum number of clips must be less than 10' })
+  @Min(2, { message: 'The minimum number of clips must be greater than 1' })
   @Type(() => Number)
   minClips?: number;
 
