@@ -55,8 +55,10 @@ export class QuestionAnswererService {
           'The video transcription is too long to be processed, please try with a shorter video',
         );
       }
+
+      const IAResponseMessages = generateQuestionAnswererMessages(transcription, question, lang);
       const IAResponse = await this.opeanAiService.getCompletion({
-        messages: generateQuestionAnswererMessages(transcription, question, lang),
+        messages: IAResponseMessages,
         temperature: 0.1,
       });
       return { message: IAResponse.content };
