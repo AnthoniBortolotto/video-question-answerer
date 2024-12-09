@@ -52,7 +52,7 @@ export class QuestionAnswererService {
 
       if (!transcriptionIsTooLong) {
         throw new BadRequestException(
-          'The video transcription is too long, try to use the videoStart and videoEnd parameters, to reduce the transcription size',
+          'The video transcription is too long to be processed, please try with a shorter video',
         );
       }
       const IAResponse = await this.opeanAiService.getCompletion({
